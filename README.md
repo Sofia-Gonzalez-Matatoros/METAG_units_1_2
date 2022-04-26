@@ -35,14 +35,83 @@ qiime tools import \
       --input-format BIOMV210Format \
       --output-path table.qza
 ```
+#### 2.3. Importamos los estadísticos
+```
+echo -n "#OTU Table" | cat - stats.txt > biom-stats.txt
+biom convert -i biom-table.txt -o stats.biom --table-type="OTU table" --to-hdf5
+qiime tools import \
+      --input-path stats.biom \
+      --type 'FeatureTable[Frequency]' \
+      --input-format BIOMV210Format \
+      --output-path stats.qza
+```
 #### 2.3. Generamos los archivos que puedan ser visualizados en quiime2 view
 ```
 qiime feature-table summarize \
       --i-table table.qza \
       --o-visualization table.qzv \
       --m-sample-metadata-file metadata
+      
+qiime feature-table summarize \
+      --i-table stats.qza \
+      --o-visualization stats.qzv \
+      --m-sample-metadata-file metadata
 
 qiime feature-table tabulate-seqs \
       --i-data rep-seqs.qza \
       --o-visualization rep-seqs.qzv
+
+```
+### 3. Determinación de las distancias filogenéticas mediante MAFFT y FastTree
+```
+qiime phylogeny align-to-tree-mafft-fasttree \
+                --i-sequences rep-seqs.qza \
+                --o-alignment aligned-rep-seqs.qza \
+                --o-masked-alignment masked-aligned-rep-seqs.qza \
+                --o-tree unrooted-tree.qza \
+                --o-rooted-tree rooted-tree.qza
+```
+### 4. Asignación taxonómica
+#### 4.1. Importamos los ficheros necesarios para la asignación taxonómica
+```
+qiime tools import \
+      --type 'FeatureData[Sequence]' \
+      --input-path 85_otus.fasta \
+      --output-path 85_otus.qza
+
+qiime tools import \
+     --type 'FeatureData[Taxonomy]' \
+     --input-format HeaderlessTSVTaxonomyFormat \
+     --input-path 85_otu_taxonomy.txt \
+     --output-path ref-taxonomy.qza
+```
+#### 4.2. Extraemos las lecturas que pueden ser amplificadas por nuestros primers 
+# CAMBIAR LOS PARÁMETROS
+```
+qiime feature-classifier extract-reads \
+      --i-sequences 85_otus.qza \
+      --p-f-primer CCTACGGGNGGCWGCAG \ 
+      --p-r-primer GACTACHVGGGTATCTAATCC \
+      --p-min-length 100 \
+      --p-max-length 490 \
+      --o-reads ref-seqs.qza
+```
+#### 4.3. Creamos el clasificador
+```
+qiime feature-classifier fit-classifier-naive-bayes \
+      --i-reference-reads ref-seqs.qza \
+      --i-reference-taxonomy ref-taxonomy.qza \
+      --o-classifier classifier.qza
+```
+#### 4.4. Realizamos la asignación taxonómica
+```
+qiime feature-classifier classify-sklearn --i-reads rep-seqs.qza \
+                                          --i-classifier classifier.qza \
+                                          --p-n-jobs 2 \
+                                          --output-dir taxa
+
+qiime taxa barplot --i-table table.qza \
+                   --i-taxonomy taxa/classification.qza \
+                   --m-metadata-file metadata \
+                   --o-visualization taxa/taxa_barplot.qzv
 ```
