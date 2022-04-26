@@ -35,7 +35,7 @@ qiime tools import \
       --input-format BIOMV210Format \
       --output-path table.qza
 ```
-#### 2.3. Generamos los archivos que puedan ser visualizados
+#### 2.3. Generamos los archivos que puedan ser visualizados en quiime2 view
 ```
 qiime feature-table summarize \
       --i-table table.qza \
