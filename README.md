@@ -1,5 +1,5 @@
 # METAG_units_1_2. Sofía González Matatoros
-
+## Fecha: 20/05/2022
 ## Reconstrucción del protocolo de QIIME2
 ### 1. Importamos las muestras
 ```
