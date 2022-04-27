@@ -15,40 +15,24 @@ qiime tools import --type 'SampleData[PairedEndSequencesWithQuality]' \
 qiime demux summarize --i-data paired-end-demux.qza --o-visualization paired-end-demux.qzv
 qiime tools view paired-end-demux.qzv
 ```
-### 2. Importamos la salida DADA a QIIME2
-#### 2.1. Importamos las secuencias
+### 2. Determinamos los ASV
+
+> Cambiar los parámetros
+
 ```
-qiime tools import \
-      --input-path rep-seqs.fna \
-      --type 'FeatureData[Sequence]' \
-      --output-path rep-seqs.qza
+qiime dada2 denoise-paired \
+  --i-demultiplexed-seqs paired-end-demux.qza \
+  --p-trim-left-f 23 \
+  --p-trunc-len-f 265 \
+  --p-trim-left-r 21 \
+  --p-trunc-len-r 220 \
+  --o-representative-sequences rep-seqs.qza \
+  --o-table table.qza \
+  --o-denoising-stats stats.qza \
+  --p-n-threads 2 \
+  --p-n-reads-learn 15000
 ```
-#### 2.2. Importamos la tabla de frecuencias
-Qiime no entiende los ficheros tabulares por lo que primero hay que pasarlo a biom
-```
-echo -n "#OTU Table" | cat - seqtab-nochim.txt > biom-table.txt
-biom convert -i biom-table.txt -o table.biom --table-type="OTU table" --to-hdf5
-```
-Ahora podemos importar la tabla de frecuencias
-```
-qiime tools import \
-      --input-path table.biom \
-      --type 'FeatureTable[Frequency]' \
-      --input-format BIOMV210Format \
-      --output-path table.qza
-```
-#### 2.3. Importamos los estadísticos
-> Esto no estoy segura de cómo comprobarlo
-```
-echo -n "#OTU Table" | cat - stats.txt > biom-stats.txt
-biom convert -i biom-table.txt -o stats.biom --table-type="OTU table" --to-hdf5
-qiime tools import \
-      --input-path stats.biom \
-      --type 'SampleData[DADA2Stats]' \
-      --input-format BIOMV210Format \
-      --output-path stats.qza
-```
-#### 2.3. Generamos los archivos que puedan ser visualizados en quiime2 view
+#### 2.1. Generamos los archivos que puedan ser visualizados en quiime2 view
 ```
 qiime feature-table summarize \
       --i-table table.qza \
@@ -64,7 +48,7 @@ qiime feature-table tabulate-seqs \
       --o-visualization rep-seqs.qzv
 
 ```
-#### 2.4. Filtrado de ASV de baja frecuencia
+#### 2.2. Filtrado de ASV de baja frecuencia
 ```
 qiime feature-table filter-features --i-table table.qza \
                                     --p-min-frequency 79 \
@@ -99,7 +83,7 @@ qiime tools import \
      --output-path ref-taxonomy.qza
 ```
 #### 4.2. Extraemos las lecturas que pueden ser amplificadas por nuestros primers 
-# CAMBIAR LOS PARÁMETROS
+> Cambiar los parámetros
 ```
 qiime feature-classifier extract-reads \
       --i-sequences 85_otus.qza \
