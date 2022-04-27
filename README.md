@@ -1,8 +1,10 @@
 # METAG_units_1_2. Sofía González Matatoros
 ## Fecha: 20/05/2022
-## Reconstrucción del protocolo de QIIME2
+## Reconstrucción del protocolo de QIIME2 
 ### 1. Importamos las muestras
 ```
+conda activate qiime2-2020.11
+
 qiime tools import --type 'SampleData[PairedEndSequencesWithQuality]' \
                    --input-path samplemanifest \
                    --output-path paired-end-demux.qza \
@@ -52,7 +54,7 @@ qiime feature-table summarize \
       --o-visualization table.qzv \
       --m-sample-metadata-file metadata
       
-qiime feature-table summarize \
+qiime feature-table summarize \ #comprobar
       --i-table stats.qza \
       --o-visualization stats.qzv \
       --m-sample-metadata-file metadata
@@ -62,6 +64,7 @@ qiime feature-table tabulate-seqs \
       --o-visualization rep-seqs.qzv
 
 ```
+#### 2.4. Filtrado de 
 ### 3. Determinación de las distancias filogenéticas mediante MAFFT y FastTree
 ```
 qiime phylogeny align-to-tree-mafft-fasttree \
@@ -114,4 +117,39 @@ qiime taxa barplot --i-table table.qza \
                    --i-taxonomy taxa/classification.qza \
                    --m-metadata-file metadata \
                    --o-visualization taxa/taxa_barplot.qzv
+```
+También podemos realizarla agrupando por los replicados, para lo cual necesitaríamos el archivo metadata_sample
+```
+qiime feature-table group --i-table table_filt.qza \
+                          --p-axis sample \
+                          --p-mode sum \
+                          --m-metadata-file metadata \
+                          --m-metadata-column Day_Temp \
+                          --o-grouped-table table_sample_mio.qza
+
+qiime feature-table summarize \
+      --i-table table_sample.qza \
+      --o-visualization table_sample_mio.qzv \
+      --m-sample-metadata-file metadata_sample
+
+qiime taxa barplot --i-table table_sample.qza \
+                   --i-taxonomy taxa/classification.qza \
+                   --m-metadata-file metadata_sample \
+                   --o-visualization taxa/taxa_sample_barplot.qzv
+```
+### 5. Estudio de la diversidad
+```
+qiime diversity alpha-rarefaction --i-table table.qza \
+                                  --p-max-depth 123000 \
+                                  --p-steps 20 \
+                                  --i-phylogeny rooted-tree.qza \
+                                  --m-metadata-file metadata \
+                                  --o-visualization rarefaction_curves.qzv
+                                  
+qiime diversity beta-group-significance --i-distance-matrix diversity/weighted_unifrac_distance_matrix.qza \
+                                        --m-metadata-file metadata \
+                                        --m-metadata-column Day_Temp \
+                                        --o-visualization diversity/weighted_unifrac_Day_Temp_significance.qzv \
+                                        --p-method permanova \
+                                        --p-pairwise
 ```
