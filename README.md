@@ -156,6 +156,13 @@ qiime diversity alpha-rarefaction --i-table table.qza \
                                   --m-metadata-file metadata \
                                   --o-visualization rarefaction_curves.qzv
                                   
+qiime diversity core-metrics-phylogenetic --i-table table_filt.qza \
+                                          --i-phylogeny rooted-tree.qza \
+                                          --p-sampling-depth 27000 \
+                                          --m-metadata-file metadata \
+                                          --p-n-jobs-or-threads 2 \
+                                          --output-dir diversity
+
 qiime diversity beta-group-significance --i-distance-matrix diversity/weighted_unifrac_distance_matrix.qza \
                                         --m-metadata-file metadata \
                                         --m-metadata-column Day_Temp \
