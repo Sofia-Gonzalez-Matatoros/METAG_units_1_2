@@ -38,12 +38,13 @@ qiime tools import \
       --output-path table.qza
 ```
 #### 2.3. Importamos los estadísticos
+> Esto no estoy segura de cómo comprobarlo
 ```
 echo -n "#OTU Table" | cat - stats.txt > biom-stats.txt
 biom convert -i biom-table.txt -o stats.biom --table-type="OTU table" --to-hdf5
 qiime tools import \
       --input-path stats.biom \
-      --type 'FeatureTable[Frequency]' \
+      --type 'SampleData[DADA2Stats]' \
       --input-format BIOMV210Format \
       --output-path stats.qza
 ```
@@ -54,17 +55,26 @@ qiime feature-table summarize \
       --o-visualization table.qzv \
       --m-sample-metadata-file metadata
       
-qiime feature-table summarize \ #comprobar
-      --i-table stats.qza \
-      --o-visualization stats.qzv \
-      --m-sample-metadata-file metadata
+qiime metadata tabulate \
+  --m-input-file stats.qza \
+  --o-visualization stats1.qzv
 
 qiime feature-table tabulate-seqs \
       --i-data rep-seqs.qza \
       --o-visualization rep-seqs.qzv
 
 ```
-#### 2.4. Filtrado de 
+#### 2.4. Filtrado de ASV de baja frecuencia
+```
+qiime feature-table filter-features --i-table table.qza \
+                                    --p-min-frequency 79 \
+                                    --p-min-samples 1 \
+                                    --o-filtered-table table.qza
+
+qiime feature-table filter-seqs --i-data rep-seqs.qza \
+                                --i-table table_filt.qza \
+                                --o-filtered-data rep-seqs.qza
+```
 ### 3. Determinación de las distancias filogenéticas mediante MAFFT y FastTree
 ```
 qiime phylogeny align-to-tree-mafft-fasttree \
@@ -93,8 +103,8 @@ qiime tools import \
 ```
 qiime feature-classifier extract-reads \
       --i-sequences 85_otus.qza \
-      --p-f-primer CCTACGGGNGGCWGCAG \ 
-      --p-r-primer GACTACHVGGGTATCTAATCC \
+      --p-f-primer GTGYCAGCMGCCGCGGTAA \ 
+      --p-r-primer GGACTACNVGGGTWTCTAAT \
       --p-min-length 100 \
       --p-max-length 490 \
       --o-reads ref-seqs.qza
