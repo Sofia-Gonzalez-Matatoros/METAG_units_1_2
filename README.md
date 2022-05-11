@@ -30,7 +30,7 @@ qiime dada2 denoise-paired \
   --o-table table.qza \
   --o-denoising-stats stats.qza \
   --p-n-threads 2 \
-  --p-n-reads-learn 15000
+  --p-n-reads-learn 1921749
 ```
 #### 2.1. Generamos los archivos que puedan ser visualizados en quiime2 view
 ```
