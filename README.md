@@ -83,14 +83,14 @@ qiime tools import \
      --output-path ref-taxonomy.qza
 ```
 #### 4.2. Extraemos las lecturas que pueden ser amplificadas por nuestros primers 
-> Cambiar los parámetros
+
 ```
 qiime feature-classifier extract-reads \
       --i-sequences 85_otus.qza \
       --p-f-primer GTGYCAGCMGCCGCGGTAA \ 
       --p-r-primer GGACTACNVGGGTWTCTAAT \
-      --p-min-length 100 \
-      --p-max-length 490 \
+      --p-min-length 101 \
+      --p-max-length 396 \
       --o-reads ref-seqs.qza
 ```
 #### 4.3. Creamos el clasificador
