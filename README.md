@@ -11,28 +11,26 @@ qiime tools import --type 'SampleData[PairedEndSequencesWithQuality]' \
                    --input-format PairedEndFastqManifestPhred33
 ```
 #### 1.1. Visualizamos un resumen del proceso de importación
+> Hecho
 ```
 qiime demux summarize --i-data paired-end-demux.qza --o-visualization paired-end-demux.qzv
 qiime tools view paired-end-demux.qzv
 ```
 ### 2. Determinamos los ASV
-
-> Cambiar los parámetros
-
+> Hecho
 ```
 qiime dada2 denoise-paired \
   --i-demultiplexed-seqs paired-end-demux.qza \
-  --p-trim-left-f 23 \
-  --p-trunc-len-f 265 \
-  --p-trim-left-r 21 \
-  --p-trunc-len-r 220 \
-  --o-representative-sequences rep-seqs.qza \
-  --o-table table.qza \
-  --o-denoising-stats stats.qza \
-  --p-n-threads 2 \
-  --p-n-reads-learn 1921749
+  -- trunc-len-f 240 \
+  -- trunc-len-r 155 \
+  -- trim-left-f 19 \
+  -- trim-left-r 20 \
+  -- n-threads 7 \
+  -- n-reads-learn 1921748 \
+
 ```
 #### 2.1. Generamos los archivos que puedan ser visualizados en quiime2 view
+> Hecho
 ```
 qiime feature-table summarize \
       --i-table table.qza \
@@ -49,6 +47,9 @@ qiime feature-table tabulate-seqs \
 
 ```
 #### 2.2. Filtrado de ASV de baja frecuencia
+
+> comprobar 
+
 ```
 qiime feature-table filter-features --i-table table.qza \
                                     --p-min-frequency 79 \
@@ -56,10 +57,11 @@ qiime feature-table filter-features --i-table table.qza \
                                     --o-filtered-table table.qza
 
 qiime feature-table filter-seqs --i-data rep-seqs.qza \
-                                --i-table table_filt.qza \
+                                --i-table table.qza \
                                 --o-filtered-data rep-seqs.qza
 ```
 ### 3. Determinación de las distancias filogenéticas mediante MAFFT y FastTree
+> Hecho
 ```
 qiime phylogeny align-to-tree-mafft-fasttree \
                 --i-sequences rep-seqs.qza \
@@ -83,17 +85,18 @@ qiime tools import \
      --output-path ref-taxonomy.qza
 ```
 #### 4.2. Extraemos las lecturas que pueden ser amplificadas por nuestros primers 
-
+> Hecho
 ```
 qiime feature-classifier extract-reads \
       --i-sequences 85_otus.qza \
       --p-f-primer GTGYCAGCMGCCGCGGTAA \ 
-      --p-r-primer GGACTACNVGGGTWTCTAAT \
-      --p-min-length 101 \
-      --p-max-length 396 \
+      --p-r-primer GGACTACHVGGGTWTCTAAT \
+      --p-min-length 100 \
+      --p-max-length 400 \
       --o-reads ref-seqs.qza
 ```
 #### 4.3. Creamos el clasificador
+> Hecho
 ```
 qiime feature-classifier fit-classifier-naive-bayes \
       --i-reference-reads ref-seqs.qza \
@@ -101,10 +104,11 @@ qiime feature-classifier fit-classifier-naive-bayes \
       --o-classifier classifier.qza
 ```
 #### 4.4. Realizamos la asignación taxonómica
+> hecho
 ```
 qiime feature-classifier classify-sklearn --i-reads rep-seqs.qza \
                                           --i-classifier classifier.qza \
-                                          --p-n-jobs 2 \
+                                          --p-n-jobs 7 \
                                           --output-dir taxa
 
 qiime taxa barplot --i-table table.qza \
@@ -113,17 +117,18 @@ qiime taxa barplot --i-table table.qza \
                    --o-visualization taxa/taxa_barplot.qzv
 ```
 También podemos realizarla agrupando por los replicados, para lo cual necesitaríamos el archivo metadata_sample
+> Esto no sé cómo comprobarlo
 ```
-qiime feature-table group --i-table table_filt.qza \
+qiime feature-table group --i-table table.qza \
                           --p-axis sample \
                           --p-mode sum \
                           --m-metadata-file metadata \
                           --m-metadata-column Day_Temp \
-                          --o-grouped-table table_sample_mio.qza
+                          --o-grouped-table table-sample-mio.qza
 
 qiime feature-table summarize \
       --i-table table_sample.qza \
-      --o-visualization table_sample_mio.qzv \
+      --o-visualization table-sample-mio.qzv \
       --m-sample-metadata-file metadata_sample
 
 qiime taxa barplot --i-table table_sample.qza \
