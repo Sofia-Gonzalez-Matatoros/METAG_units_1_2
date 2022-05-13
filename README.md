@@ -111,24 +111,16 @@ qiime feature-classifier classify-sklearn --i-reads rep-seqs.qza \
                                           --p-n-jobs 7 \
                                           --output-dir taxa
 
-qiime taxa barplot --i-table table.qza \
-                   --i-taxonomy taxa/classification.qza \
-                   --m-metadata-file metadata \
-                   --o-visualization taxa/taxa_barplot.qzv
-```
-También podemos realizarla agrupando por los replicados, para lo cual necesitaríamos el archivo metadata_sample
-> Esto no sé cómo comprobarlo
-```
 qiime feature-table group --i-table table.qza \
                           --p-axis sample \
                           --p-mode sum \
                           --m-metadata-file metadata \
                           --m-metadata-column Day_Temp \
-                          --o-grouped-table table-sample-mio.qza
+                          --o-grouped-table table_sample.qza
 
 qiime feature-table summarize \
       --i-table table_sample.qza \
-      --o-visualization table-sample-mio.qzv \
+      --o-visualization table_sample.qzv \
       --m-sample-metadata-file metadata_sample
 
 qiime taxa barplot --i-table table_sample.qza \
