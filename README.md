@@ -131,23 +131,31 @@ qiime taxa barplot --i-table table_sample.qza \
 ### 5. Estudio de la diversidad
 ```
 qiime diversity alpha-rarefaction --i-table table.qza \
-                                  --p-max-depth 123000 \
-                                  --p-steps 20 \
+                                  --p-max-depth 288000 \
+                                  --p-steps 100 \
                                   --i-phylogeny rooted-tree.qza \
                                   --m-metadata-file metadata \
                                   --o-visualization rarefaction_curves.qzv
                                   
 qiime diversity core-metrics-phylogenetic --i-table table_filt.qza \
                                           --i-phylogeny rooted-tree.qza \
-                                          --p-sampling-depth 27000 \
+                                          --p-sampling-depth 85000 \
                                           --m-metadata-file metadata \
                                           --p-n-jobs-or-threads 2 \
                                           --output-dir diversity
 
-qiime diversity beta-group-significance --i-distance-matrix diversity/weighted_unifrac_distance_matrix.qza \
+qiime diversity beta-group-significance --i-distance-matrix diversity/bray_curtis_distance_matrix.qza \
                                         --m-metadata-file metadata \
                                         --m-metadata-column Day_Temp \
-                                        --o-visualization diversity/weighted_unifrac_Day_Temp_significance.qzv \
+                                        --o-visualization diversity/bray_curtis_day_temp_significance.qzv \
                                         --p-method permanova \
-                                        --p-pairwise
+                                        --p-pairwise True
+
+qiime diversity beta-group-significance --i-distance-matrix diversity/unweighted_unifrac_distance_matrix.qza \
+                                        --m-metadata-file metadata \
+                                        --m-metadata-column Day_Temp \
+                                        --o-visualization diversity/weighted_unifrac_day_temp_significance.qzv \
+                                        --p-method permanova \
+                                        --p-pairwise True
+
 ```
