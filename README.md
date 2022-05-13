@@ -160,26 +160,18 @@ qiime diversity beta-group-significance --i-distance-matrix diversity/unweighted
                                         --p-pairwise True
 
 ```
-#### 5.1. Carpeta diversity_sample
+#### 5.2. Carpeta diversity_sample
 ```
                                   
-qiime diversity core-metrics-phylogenetic --i-table table_filt.qza \
+qiime diversity core-metrics-phylogenetic --i-table table_sample.qza \
                                           --i-phylogeny rooted-tree.qza \
-                                          --p-sampling-depth 85000 \
+                                          --p-sampling-depth 101046 \
                                           --m-metadata-file metadata \
                                           --p-n-jobs-or-threads 2 \
-                                          --output-dir diversity
+                                          --output-dir metadata_sample
 
-qiime diversity beta-group-significance --i-distance-matrix diversity/bray_curtis_distance_matrix.qza \
-                                        --m-metadata-file metadata \
-                                        --m-metadata-column Day_Temp \
-                                        --o-visualization diversity/bray_curtis_day_temp_significance.qzv \
-                                        --p-method permanova \
-                                        --p-pairwise True
+```
+### 6. Gráfico DESeq
+This notebook tries to explain the protocol to compare samples two vs two in order to determine which ASVs/Taxons are significatively abundant in one of the samples. As we are comparing abundance among two samples we can use the same library that compare gene counts for RNASeq, that is, DESeq2. From now on I am going to write down all the commands that must be run in R though first of all you must specify the working directory with setwd command.
 
-qiime diversity beta-group-significance --i-distance-matrix diversity/unweighted_unifrac_distance_matrix.qza \
-                                        --m-metadata-file metadata \
-                                        --m-metadata-column Day_Temp \
-                                        --o-visualization diversity/weighted_unifrac_day_temp_significance.qzv \
-                                        --p-method permanova \
-                                        --p-pairwise True
+
