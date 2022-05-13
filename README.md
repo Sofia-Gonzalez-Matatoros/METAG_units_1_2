@@ -172,6 +172,12 @@ qiime diversity core-metrics-phylogenetic --i-table table_sample.qza \
 
 ```
 ### 6. Gráfico DESeq
-This notebook tries to explain the protocol to compare samples two vs two in order to determine which ASVs/Taxons are significatively abundant in one of the samples. As we are comparing abundance among two samples we can use the same library that compare gene counts for RNASeq, that is, DESeq2. From now on I am going to write down all the commands that must be run in R though first of all you must specify the working directory with setwd command.
+Tras ejecutar el protocolo DESeq2 se obtuvo la siguiente gráfica
+
+![Screenshot](https://github.com/Sofia-Gonzalez-Matatoros/METAG_units_1_2/blob/2881a4912cc424afd59776abfca876296fca3d3b/Captura%20de%20pantalla%20de%202022-05-13%2019-34-39.png)
+
+Este protocolo realiza análisis de expresión diferencial de RNAs en las muestras de ratón, de forma que en el eje de ordenadas observamos la magnitud del cambio de expresión (log2FC), en el de abscisas aparecen las familias microbianas identificadas, y los colores de los puntos hacen referencia a los filos. 
+
+A rasgos generales, se puede apreciar que la cantidad de RNA perteneciente a individuos del filo Firmicutes ha aumentado, mientras que este ha disminuido en el de Bacteroidetes. Una posible interpretación de esta gráfica es que la microbiota 
 
 
