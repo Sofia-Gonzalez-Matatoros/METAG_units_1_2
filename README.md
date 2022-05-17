@@ -110,7 +110,7 @@ qiime feature-table group --i-table table.qza \
 qiime feature-table summarize \
       --i-table table_sample.qza \
       --o-visualization table_sample.qzv \
-      --m-sample-metadata-file metadata_sample #comprobar esta metadata
+      --m-sample-metadata-file metadata_sample
 
 qiime taxa barplot --i-table table_sample.qza \
                    --i-taxonomy taxa/classification.qza \
@@ -158,7 +158,7 @@ qiime diversity core-metrics-phylogenetic --i-table table_sample.qza \
                                           --p-sampling-depth 101046 \
                                           --m-metadata-file metadata \
                                           --p-n-jobs-or-threads 2 \
-                                          --output-dir metadata_sample # comprobar esta metadata
+                                          --output-dir diversity_sample
 
 ```
 ### 6. Gráfico DESeq
