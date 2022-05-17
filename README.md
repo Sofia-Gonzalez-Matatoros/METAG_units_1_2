@@ -27,7 +27,9 @@ qiime dada2 denoise-paired \
   -- trim-left-r 20 \
   -- n-threads 7 \
   -- n-reads-learn 1921748 \
-
+  --o-representative-sequences rep-seqs.qza \
+  --o-table table.qza \
+  --o-denoising-stats stats.qza 
 ```
 #### 2.1. Generamos los archivos que puedan ser visualizados en quiime2 view
 > Hecho
