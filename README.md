@@ -53,7 +53,7 @@ qiime feature-table tabulate-seqs \
 
 
 ```
-### 3. Determinación de las distancias filogenéticas mediante MAFFT y FastTree
+### 3. Determinamos las distancias filogenéticas mediante MAFFT y FastTree
 
 ```
 qiime phylogeny align-to-tree-mafft-fasttree \
@@ -63,7 +63,7 @@ qiime phylogeny align-to-tree-mafft-fasttree \
                 --o-tree unrooted-tree.qza \
                 --o-rooted-tree rooted-tree.qza
 ```
-### 4. Asignación taxonómica
+### 4. Procedemos a la asignación taxonómica
 #### 4.1. Importamos los ficheros necesarios para la asignación taxonómica
 ```
 qiime tools import \
@@ -121,7 +121,7 @@ qiime taxa barplot --i-table table_sample.qza \
                    --m-metadata-file metadata_sample \
                    --o-visualization taxa/taxa_sample_barplot.qzv
 ```
-### 5. Estudio de la diversidad
+### 5. Estudiamos la diversidad
 #### 5.1. Carpeta diversity
 
 ```
@@ -165,7 +165,7 @@ qiime diversity core-metrics-phylogenetic --i-table table_sample.qza \
                                           --output-dir diversity_sample
 
 ```
-### 6. Gráfico DESeq
+### 6. Interpretamos el gráfico DESeq2
 Tras ejecutar el protocolo DESeq2 se obtuvo la siguiente gráfica
 
 ![Screenshot](https://github.com/Sofia-Gonzalez-Matatoros/METAG_units_1_2/blob/2881a4912cc424afd59776abfca876296fca3d3b/Captura%20de%20pantalla%20de%202022-05-13%2019-34-39.png)
