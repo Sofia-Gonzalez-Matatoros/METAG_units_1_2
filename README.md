@@ -174,6 +174,6 @@ Este protocolo realiza análisis de expresión diferencial de RNAs en las muestr
 
 A rasgos generales, se puede apreciar que la cantidad de RNA perteneciente a individuos del filo Firmicutes ha aumentado, especialmente los de la familia Lachnospiraceae. Mientras que este ha disminuido en el de Bacteroidetes, siendo S24-7 la familia más representativa. Sin embargo, también cabe destacar que concretamente en esta familia que hay un par de excepciones a este decrecimiento.
 
-Una posible interpretación de esta gráfica es que el frío genera cambios en la composición de la microbiota, de manera que aumenta el número de individuos pertenecientes al filo Firmicutes y disminuyen los pertenecientes al Bacteroidetes, por ello, la expresión de RNA relativo a esos filos aumenta y disminuye respectivamente.
+Una posible interpretación de esta gráfica es que el frío genera cambios en la composición de la microbiota, de manera que aumenta el número de individuos pertenecientes al filo Firmicutes y disminuyen los pertenecientes al filo Bacteroidetes, por ello, la expresión de RNA relativo a esos filos aumenta y disminuye respectivamente.
 
 
