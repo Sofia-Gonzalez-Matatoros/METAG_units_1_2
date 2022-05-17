@@ -45,20 +45,7 @@ qiime feature-table tabulate-seqs \
       --i-data rep-seqs.qza \
       --o-visualization rep-seqs.qzv
 
-```
-#### 2.2. Filtrado de ASV de baja frecuencia
 
-> comprobar 
-
-```
-qiime feature-table filter-features --i-table table.qza \
-                                    --p-min-frequency 79 \
-                                    --p-min-samples 1 \
-                                    --o-filtered-table table.qza
-
-qiime feature-table filter-seqs --i-data rep-seqs.qza \
-                                --i-table table.qza \
-                                --o-filtered-data rep-seqs.qza
 ```
 ### 3. Determinación de las distancias filogenéticas mediante MAFFT y FastTree
 > Hecho
