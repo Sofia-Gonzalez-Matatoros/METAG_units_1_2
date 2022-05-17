@@ -3,7 +3,7 @@ Alumna: Sofía González Matatoros
 
 Fecha: 20/05/2022
 
-Link al repositorio de Github: https://github.com/Sofia-Gonzalez-Matatoros/METAG_units_1_2/blob/bfcfcb67175473252d4c9f58fbe8ed57d6c897d3/README.md
+Link al repositorio de Github: https://github.com/Sofia-Gonzalez-Matatoros/METAG_units_1_2.git
 
 ### 1. Importamos las muestras
 ```
