@@ -21,12 +21,12 @@ qiime tools view paired-end-demux.qzv
 ```
 qiime dada2 denoise-paired \
   --i-demultiplexed-seqs paired-end-demux.qza \
-  -- trunc-len-f 240 \
-  -- trunc-len-r 155 \
-  -- trim-left-f 19 \
-  -- trim-left-r 20 \
-  -- n-threads 7 \
-  -- n-reads-learn 1921748 \
+  --p-trunc-len-f 240 \
+  --p-trunc-len-r 155 \
+  --p-trim-left-f 19 \
+  --p-trim-left-r 20 \
+  --p-n-threads 7 \
+  --p-n-reads-learn 1921748 \
   --o-representative-sequences rep-seqs.qza \
   --o-table table.qza \
   --o-denoising-stats stats.qza 
@@ -110,7 +110,7 @@ qiime feature-table group --i-table table.qza \
 qiime feature-table summarize \
       --i-table table_sample.qza \
       --o-visualization table_sample.qzv \
-      --m-sample-metadata-file metadata_sample
+      --m-sample-metadata-file metadata_sample #comprobar esta metadata
 
 qiime taxa barplot --i-table table_sample.qza \
                    --i-taxonomy taxa/classification.qza \
@@ -158,7 +158,7 @@ qiime diversity core-metrics-phylogenetic --i-table table_sample.qza \
                                           --p-sampling-depth 101046 \
                                           --m-metadata-file metadata \
                                           --p-n-jobs-or-threads 2 \
-                                          --output-dir metadata_sample
+                                          --output-dir metadata_sample # comprobar esta metadata
 
 ```
 ### 6. Gráfico DESeq
@@ -168,6 +168,8 @@ Tras ejecutar el protocolo DESeq2 se obtuvo la siguiente gráfica
 
 Este protocolo realiza análisis de expresión diferencial de RNAs en las muestras de ratón, de forma que en el eje de ordenadas observamos la magnitud del cambio de expresión (log2FC), en el de abscisas aparecen las familias microbianas identificadas, y los colores de los puntos hacen referencia a los filos. 
 
-A rasgos generales, se puede apreciar que la cantidad de RNA perteneciente a individuos del filo Firmicutes ha aumentado, mientras que este ha disminuido en el de Bacteroidetes. Una posible interpretación de esta gráfica es que el frío genera cambios en la composición de la microbiota, de manera que aumenta el número de individuos pertenecientes al filo Firmicutes y disminuyen los pertenecientes al Bacteroidetes, por ello, la expresión de RNA relativo a esos filos aumenta y disminuye respectivamente.
+A rasgos generales, se puede apreciar que la cantidad de RNA perteneciente a individuos del filo Firmicutes ha aumentado, especialmente los de la familia Lachnospiraceae. Mientras que este ha disminuido en el de Bacteroidetes, siendo S24-7 la familia más representativa. Sin embargo, también cabe destacar que concretamente en esta familia que hay un par de excepciones a este decrecimiento.
+
+Una posible interpretación de esta gráfica es que el frío genera cambios en la composición de la microbiota, de manera que aumenta el número de individuos pertenecientes al filo Firmicutes y disminuyen los pertenecientes al Bacteroidetes, por ello, la expresión de RNA relativo a esos filos aumenta y disminuye respectivamente.
 
 
