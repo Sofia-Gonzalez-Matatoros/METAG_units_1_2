@@ -1,6 +1,10 @@
-# METAG_units_1_2. Sofía González Matatoros
-## Fecha: 20/05/2022
-## Reconstrucción del protocolo de QIIME2 
+# METAG_units_1_2. Reconstrucción del protocolo de QIIME2
+Alumna: Sofía González Matatoros
+
+Fecha: 20/05/2022
+
+Link al repositorio de Github: https://github.com/Sofia-Gonzalez-Matatoros/METAG_units_1_2/blob/bfcfcb67175473252d4c9f58fbe8ed57d6c897d3/README.md
+
 ### 1. Importamos las muestras
 ```
 conda activate qiime2-2020.11
@@ -11,13 +15,13 @@ qiime tools import --type 'SampleData[PairedEndSequencesWithQuality]' \
                    --input-format PairedEndFastqManifestPhred33
 ```
 #### 1.1. Visualizamos un resumen del proceso de importación
-> Hecho
+
 ```
 qiime demux summarize --i-data paired-end-demux.qza --o-visualization paired-end-demux.qzv
 qiime tools view paired-end-demux.qzv
 ```
 ### 2. Determinamos los ASV
-> Hecho
+
 ```
 qiime dada2 denoise-paired \
   --i-demultiplexed-seqs paired-end-demux.qza \
@@ -32,7 +36,7 @@ qiime dada2 denoise-paired \
   --o-denoising-stats stats.qza 
 ```
 #### 2.1. Generamos los archivos que puedan ser visualizados en quiime2 view
-> Hecho
+
 ```
 qiime feature-table summarize \
       --i-table table.qza \
@@ -50,7 +54,7 @@ qiime feature-table tabulate-seqs \
 
 ```
 ### 3. Determinación de las distancias filogenéticas mediante MAFFT y FastTree
-> Hecho
+
 ```
 qiime phylogeny align-to-tree-mafft-fasttree \
                 --i-sequences rep-seqs.qza \
@@ -74,7 +78,7 @@ qiime tools import \
      --output-path ref-taxonomy.qza
 ```
 #### 4.2. Extraemos las lecturas que pueden ser amplificadas por nuestros primers 
-> Hecho
+
 ```
 qiime feature-classifier extract-reads \
       --i-sequences 85_otus.qza \
@@ -85,7 +89,7 @@ qiime feature-classifier extract-reads \
       --o-reads ref-seqs.qza
 ```
 #### 4.3. Creamos el clasificador
-> Hecho
+
 ```
 qiime feature-classifier fit-classifier-naive-bayes \
       --i-reference-reads ref-seqs.qza \
@@ -93,7 +97,7 @@ qiime feature-classifier fit-classifier-naive-bayes \
       --o-classifier classifier.qza
 ```
 #### 4.4. Realizamos la asignación taxonómica
-> hecho
+
 ```
 qiime feature-classifier classify-sklearn --i-reads rep-seqs.qza \
                                           --i-classifier classifier.qza \
@@ -119,7 +123,7 @@ qiime taxa barplot --i-table table_sample.qza \
 ```
 ### 5. Estudio de la diversidad
 #### 5.1. Carpeta diversity
-> hecho
+
 ```
 qiime diversity alpha-rarefaction --i-table table.qza \
                                   --p-max-depth 288000 \
@@ -151,7 +155,7 @@ qiime diversity beta-group-significance --i-distance-matrix diversity/unweighted
 
 ```
 #### 5.2. Carpeta diversity_sample
-> hecho
+
 ```
 qiime diversity core-metrics-phylogenetic --i-table table_sample.qza \
                                           --i-phylogeny rooted-tree.qza \
